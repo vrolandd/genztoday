@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model DailyUser {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  createdAt DateTime @default(now())
+  regIpAddress String
+  posts       DailyPost[]
+  comments  DailyComment[]
+  reactions DailyReaction[]
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  s3BucketUrl String
+  createdAt DateTime @default(now())
+  posts     DailyPost[]
+}
+
+model DailyPost {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      DailyUser @relation(fields: [userId], references: [id])
+  imageId   String
+  image     Image @relation(fields: [imageId], references: [id])
+  status    String @default("draft") // to_be_reviewed, flagged, published
+  comments  DailyComment[]
+  categories DailyCategory[]
+  reactions DailyReaction[]
+}
+
+model DailyComment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    String @default("draft") // to_be_reviewed, flagged, published
+  userId    String
+  user      DailyUser @relation(fields: [userId], references: [id])
+  postId    String
+  post      DailyPost @relation(fields: [postId], references: [id])
+  reactions DailyReaction[]
+}
+
+model DailyCategory {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     DailyPost[]
+}
+
+model DailyReaction {
+  id        String   @id @default(uuid())
+  type      String
+  count     Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      DailyUser @relation(fields: [userId], references: [id])
+  postId    String?
+  post      DailyPost? @relation(fields: [postId], references: [id])
+  commentId String?
+  comment   DailyComment? @relation(fields: [commentId], references: [id])
+}
