@@ -35,7 +35,8 @@ pnpm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/app/generated/prisma
+/app/lib/prisma
+/lib/prisma
 .env
 bun.lock*
 package-lock.json
