@@ -21,8 +21,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn(
         "antialiased",
-        playfair.className,
-        "font-heading font-medium"
+        playfair.className
       )}
     >
       <body>
