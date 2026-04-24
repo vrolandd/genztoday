@@ -1,15 +1,14 @@
-import { Geist_Mono, Inter } from "next/font/google"
+import { Playfair_Display } from "next/font/google"
 
 import "./globals.css"
 import { SessionProvider } from "@/components/session-provider"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
-
-const fontMono = Geist_Mono({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-heading",
+  display: "swap",
 })
 
 export default async function RootLayout({
@@ -21,7 +20,10 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
+      className={cn(
+        "antialiased",
+        playfair.className
+      )}
     >
       <body>
         <SessionProvider>
